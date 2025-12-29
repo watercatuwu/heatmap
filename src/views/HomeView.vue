@@ -201,7 +201,7 @@ onMounted(async () => {
 watch(
   () => heatmapState.subDomainMode,
   () => {
-    if (heatmapState.subDomainMode==="month") heatmapState.domainMode = "year"
+    if (heatmapState.subDomainMode === 'month') heatmapState.domainMode = 'year'
     if (cal) cal.destroy()
     cal = new CalHeatmap()
     cal.paint(computedTemplate.value, calheatmapPlugins.value)
@@ -223,7 +223,7 @@ watch(
 
 <template>
   <div v-if="rawHeatmapData.length > 0" id="main">
-    <div id="heatmap-box">
+    <div id="content-box">
       <div id="nav">
         <div id="dropdown-box">
           <select v-model="heatmapState.sportType" name="sportTypeSelector" class="dropdown">
@@ -277,8 +277,10 @@ watch(
           <img id="avatar" src="/user.jpg" />
         </div>
       </div>
-      <div style="display: flex; justify-content: center">
-        <div id="cal-heatmap"></div>
+      <div style="overflow-x: auto">
+        <div style="display: flex; justify-content: center; min-width: max-content">
+          <div id="cal-heatmap"></div>
+        </div>
       </div>
       <div id="bottom-box" class="flex-between">
         <div class="title">{{ counter }}{{ unit }}</div>
@@ -346,6 +348,28 @@ watch(
   display: flex;
 }
 
+#dropdown-box {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  #dropdown-box {
+    flex-direction: column;
+    width: 100%;
+  }
+  .dropdown {
+    width: 100%;
+  }
+  #avatar {
+    display: none;
+  }
+  #main {
+    align-items: start;
+  }
+}
+
 #nav {
   display: flex;
   width: 100%;
@@ -362,10 +386,10 @@ watch(
   flex-direction: column;
 }
 
-#heatmap-box {
+#content-box {
   background: #fff;
   max-width: 100%;
-  padding: 1rem 1rem 1rem 1rem;
+  padding: 2rem 2rem 2rem 2rem;
 }
 
 .title {
