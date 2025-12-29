@@ -7,8 +7,8 @@ import { onMounted, ref, reactive, computed, watch } from 'vue'
 
 const dataTypeConfig = {
   distance: { alia: 'd', scaleMax: 50, unit: 'km' },
-  moving_time: { alia: 'mt', scaleMax: 120, unit: 'min' },
-  elapsed_time: { alia: 'et', scaleMax: 240, unit: 'min' },
+  moving_time: { alia: 'mt', scaleMax: 120, unit: 'minutes' },
+  elapsed_time: { alia: 'et', scaleMax: 240, unit: 'minutes' },
   elevation_gain: { alia: 'eg', scaleMax: 200, unit: 'm' },
   activity: { alia: 'a', scaleMax: 5, unit: 'times' },
 }
@@ -201,6 +201,7 @@ onMounted(async () => {
 watch(
   () => heatmapState.subDomainMode,
   () => {
+    if (heatmapState.subDomainMode==="month") heatmapState.domainMode = "year"
     if (cal) cal.destroy()
     cal = new CalHeatmap()
     cal.paint(computedTemplate.value, calheatmapPlugins.value)
