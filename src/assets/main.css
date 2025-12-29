@@ -1,0 +1,11 @@
+@import 'cal-heatmap/cal-heatmap.css';
+
+body {
+  font-family: 'Google Sans', sans-serif;
+  height: 100dvh;
+  margin: 0;
+}
+
+#app {
+  height: 100%;
+}
