@@ -8,7 +8,7 @@ import { onMounted, ref, reactive, computed, watch } from 'vue'
 const dataTypeConfig = {
   distance: { alia: 'd', scaleMax: 50, unit: 'km' },
   moving_time: { alia: 'mt', scaleMax: 120, unit: 'min' },
-  elapsed_time: { alia: 'et', scaleMax: 120, unit: 'min' },
+  elapsed_time: { alia: 'et', scaleMax: 240, unit: 'min' },
   elevation_gain: { alia: 'eg', scaleMax: 200, unit: 'm' },
   activity: { alia: 'a', scaleMax: 5, unit: 'times' },
 }
@@ -69,13 +69,10 @@ const rawHeatmapData = ref([])
 const computedHeatmapData = computed(() => {
   let data = rawHeatmapData.value
   const end = new Date(new Date(heatmapState.start).getFullYear() + 1, 0, 1).getTime()
-  data = data
-      .filter((d) => d.t > heatmapState.start)
-      .filter((d) => d.t < end)
+  data = data.filter((d) => d.t > heatmapState.start).filter((d) => d.t < end)
 
   if (heatmapState.sportType !== 'all') {
-    data = data
-      .filter((d) => d.type === heatmapState.sportType)
+    data = data.filter((d) => d.type === heatmapState.sportType)
   }
 
   return data
@@ -120,7 +117,18 @@ const baseTemplate = {
   },
   scale: {
     color: {
-      range: ['#ebedf0', '#9be9a8', '#40c463', '#30a14e', '#216e39'],
+      range: [
+        '#ebedf0',
+        '#d6f5d6',
+        '#bff0b7',
+        '#a8eb99',
+        '#91e87b',
+        '#7bd95f',
+        '#64c963',
+        '#4db753',
+        '#36a144',
+        '#216e39',
+      ],
       type: 'quantile',
     },
   },
@@ -196,17 +204,19 @@ watch(
     if (cal) cal.destroy()
     cal = new CalHeatmap()
     cal.paint(computedTemplate.value, calheatmapPlugins.value)
-  }
+  },
 )
 
 watch(
-  () => [heatmapState.domainMode,
-  heatmapState.sportType,
-  heatmapState.start,
-  heatmapState.dataType],
+  () => [
+    heatmapState.domainMode,
+    heatmapState.sportType,
+    heatmapState.start,
+    heatmapState.dataType,
+  ],
   () => {
     cal.paint(computedTemplate.value, calheatmapPlugins.value)
-  }
+  },
 )
 </script>
 
